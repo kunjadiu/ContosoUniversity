@@ -1,49 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using ContosoUniversity.Data;
+﻿using ContosoUniversity.Data;
 using ContosoUniversity.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
-namespace ContosoUniversity.Pages.Students
+public class IModel : PageModel
 {
-    public class CreateModel : PageModel
+    private readonly SchoolContext _context;
+    public IndexModel(SchoolContext context)
     {
-        private readonly ContosoUniversity.Data.SchoolContext _context;
+        _context = context;
+    }
 
-        public CreateModel(ContosoUniversity.Data.SchoolContext context)
+    public string NameSort { get; set; }
+    public string DateSort { get; set; }
+    public string CurrentFilter { get; set; }
+    public string CurrentSort { get; set; }
+
+    public IList<Student> Students { get; set; }
+
+    public async Task OnGetAsync(string sortOrder)
+    {
+        // using System;
+        NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+        DateSort = sortOrder == "Date" ? "date_desc" : "Date";
+
+        IQueryable<Student> studentsIQ = from s in _context.Students
+                                         select s;
+
+        switch (sortOrder)
         {
-            _context = context;
+            case "name_desc":
+                studentsIQ = studentsIQ.OrderByDescending(s => s.LastName);
+                break;
+            case "Date":
+                studentsIQ = studentsIQ.OrderBy(s => s.EnrollmentDate);
+                break;
+            case "date_desc":
+                studentsIQ = studentsIQ.OrderByDescending(s => s.EnrollmentDate);
+                break;
+            default:
+                studentsIQ = studentsIQ.OrderBy(s => s.LastName);
+                break;
         }
 
-        public IActionResult OnGet()
-        {
-            return Page();
-        }
-
-        [BindProperty]
-        public Student Student { get; set; }
-
-
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
-        {
-            var emptyStudent = new Student();
-
-            if (await TryUpdateModelAsync<Student>(
-                emptyStudent,
-                "student",   // Prefix for form value.
-                s => s.FirstMidName, s => s.LastName, s => s.EnrollmentDate))
-            {
-                _context.Students.Add(emptyStudent);
-                await _context.SaveChangesAsync();
-                return RedirectToPage("./Index");
-            }
-
-            return Page();
-        }
+        Students = await studentsIQ.AsNoTracking().ToListAsync();
     }
 }
