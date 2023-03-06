@@ -2,10 +2,10 @@
 @model ContosoUniversity.Pages.Students.IndexModel
 
 @{
-    ViewData["Title"] = "Students";
+    ViewData["Title"] = "Index";
 }
 
-<h1>Students</h1>
+<h1>Index</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
@@ -14,17 +14,13 @@
     <thead>
         <tr>
             <th>
-                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort">
-                    @Html.DisplayNameFor(model => model.Student[0].LastName)
-                </a>
+                @Html.DisplayNameFor(model => model.Student[0].LastName)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Student[0].FirstMidName)
             </th>
             <th>
-                <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort">
-                    @Html.DisplayNameFor(model => model.Student[0].EnrollmentDate)
-                </a>
+                @Html.DisplayNameFor(model => model.Student[0].EnrollmentDate)
             </th>
             <th></th>
         </tr>
