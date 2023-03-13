@@ -35,6 +35,15 @@ namespace ContosoUniversity.Models
             }
         }
 
+        public IList<string> Alphabet
+        {
+            get
+            {
+                var alphabet = Enumerable.Range(65, 26).Select(i => ((char)i).ToString()).ToList();
+                alphabet.Insert(0, "All");
+                return alphabet;
+            }
+        }
         public ICollection<Enrollment> Enrollments { get; set; }
     }
 }

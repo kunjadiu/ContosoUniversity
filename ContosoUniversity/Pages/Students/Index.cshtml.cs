@@ -26,9 +26,20 @@ namespace ContosoUniversity.Pages.Students
         public string CurrentFilter { get; set; }
         public string CurrentSort { get; set; }
 
+        public string SearchByLetter { get; set; }
+
         public PaginatedList<Student> Student { get;set; } = default!;
 
-        public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex)
+        public void generateSearchMenuByLetter() {
+            int i;
+            i = 65;
+            while (i <= 90)
+            {
+                
+                i++;
+            }
+        }
+        public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex, string SearchByLetter)
         {
             CurrentSort = sortOrder;
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -52,6 +63,12 @@ namespace ContosoUniversity.Pages.Students
             {
                 studentsIQ = studentsIQ.Where(s => s.LastName.Contains(searchString)
                                        || s.FirstMidName.Contains(searchString));
+            }
+
+            if (!String.IsNullOrEmpty(SearchByLetter))
+            {
+                studentsIQ = studentsIQ.Where(s => s.LastName.Contains(SearchByLetter)
+                                       || s.FirstMidName.Contains(SearchByLetter));
             }
 
             switch (sortOrder)

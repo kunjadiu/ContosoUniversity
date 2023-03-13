@@ -22,10 +22,27 @@
     </div>
 </form>
 
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav mr-auto">
+            @for (int i = 0; i < 26; i++)
+            {
+                <li class="nav-item active">
+                    <a class="nav-link" asp-page="./Index"
+                   asp-route-SearchByLetter="@Html.DisplayName(Convert.ToChar( i + 65 ).ToString())">
+                        @Html.DisplayName(Convert.ToChar( i + 65 ).ToString())
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</nav>
+
+
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th>    
                 <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort"
                    asp-route-currentFilter="@Model.CurrentFilter">
                     @Html.DisplayNameFor(model => model.Student[0].LastName)
@@ -47,6 +64,7 @@
     @foreach (var item in Model.Student) 
     {
         <tr>
+            
             <td>
                 @Html.DisplayFor(modelItem => item.LastName)
             </td>
