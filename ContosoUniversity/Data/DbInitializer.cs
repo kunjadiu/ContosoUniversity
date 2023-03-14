@@ -9,7 +9,8 @@ namespace ContosoUniversity.Data
     {
         public static void Initialize(SchoolContext context)
         {
-            // Look for any students.
+            // Look for any students.m
+            
             if (context.Students.Any())
             {
                 return;   // DB has been seeded
@@ -89,35 +90,42 @@ namespace ContosoUniversity.Data
             {
                 FirstMidName = "Kim",
                 LastName = "Abercrombie",
-                HireDate = DateTime.Parse("1995-03-11")
+                HireDate = DateTime.Parse("1995-03-11"),
+                BirthDate = DateTime.Parse("1977-03-11")
+
             };
 
             var fakhouri = new Instructor
             {
                 FirstMidName = "Fadi",
                 LastName = "Fakhouri",
-                HireDate = DateTime.Parse("2002-07-06")
+                HireDate = DateTime.Parse("2002-07-06"),
+                BirthDate = DateTime.Parse("1977-03-11")
             };
 
             var harui = new Instructor
             {
                 FirstMidName = "Roger",
                 LastName = "Harui",
-                HireDate = DateTime.Parse("1998-07-01")
+                HireDate = DateTime.Parse("1998-07-01"),
+                BirthDate = DateTime.Parse("1977-03-11")
             };
 
             var kapoor = new Instructor
             {
                 FirstMidName = "Candace",
                 LastName = "Kapoor",
-                HireDate = DateTime.Parse("2001-01-15")
+                HireDate = DateTime.Parse("2001-01-15"),
+                BirthDate = DateTime.Parse("1977-03-11")
+
             };
 
             var zheng = new Instructor
             {
                 FirstMidName = "Roger",
                 LastName = "Zheng",
-                HireDate = DateTime.Parse("2004-02-12")
+                HireDate = DateTime.Parse("2004-02-12"),
+                BirthDate = DateTime.Parse("1977-03-11")
             };
 
             var instructors = new Instructor[]

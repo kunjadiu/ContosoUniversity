@@ -1,0 +1,162 @@
+﻿@page
+@model ContosoUniversity.Pages.Students.ExperimentModel
+@{
+     ViewData["Title"] = "Experiment";
+}
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./Index">Back to full List</a>
+        </p>
+    </div>
+</form>
+<div class="d-flex">
+    <ul class="list-inline mx-auto justify-content-center" style="display:flex;font-size: 20px;">
+    @for (int i =0; i <=25; i++)
+    {
+        <li class="nav-item">
+            <a  class="nav-link"
+                asp-page="./Experiment" 
+                asp-route-DataSort="@Html.DisplayName(Convert.ToChar(65 + i).ToString())">
+                @Html.DisplayName(Convert.ToChar(65 + i).ToString())
+            </a>
+        </li>
+    }
+    </ul>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Selected</th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Students[0].LastName)*@
+                <a asp-page="./Index" asp-route-sortOrder="@Model.NameSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Students[0].LastName)
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Students[0].FirstMidName)
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Students[0].EnrollmentDate)*@
+                <a asp-page="./Index" asp-route-sortOrder="@Model.DateSort"
+                   asp-route-currentFilter="@Model.CurrentFilter">
+                    @Html.DisplayNameFor(model => model.Students[0].EnrollmentDate)
+                </a>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <form asp-page="./Experiment" method="post">
+          @foreach (var item in Model.Students) 
+          {
+                <tr>
+                    <td>
+                        @if(Model.SelectionID!=null)
+                        {
+                            @if(Model.SelectionID.Contains(item.ID))
+                            {
+                                <input type="checkbox"
+                               name="SelectedStudents"
+                               value="@item.ID"
+                               checked="CHECKED"
+                                />
+                            }
+                            else
+                            {
+                            
+                            <input type="checkbox"
+                               name="SelectedStudents"
+                               value="@item.ID"
+                                />
+                            }
+                        }
+                        else
+                        {
+                             <input type="checkbox"
+                               name="SelectedStudents"
+                               value="@item.ID"
+                                />
+                        }
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstMidName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EnrollmentDate)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+          }
+          <input type="submit" value="Select" class="btn btn-primary"/>
+        </form>
+    </tbody>
+</table>
+@*@{
+    var prevDisabled = !Model.Students.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Students.HasNextPage ? "disabled" : "";
+}
+
+<a asp-page="./Experiment"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Students.PageIndex - 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   asp-route-DataSort="@Model.DataSort"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-page="./Experiment"
+   asp-route-sortOrder="@Model.CurrentSort"
+   asp-route-pageIndex="@(Model.Students.PageIndex + 1)"
+   asp-route-currentFilter="@Model.CurrentFilter"
+   asp-route-DataSort="@Model.DataSort"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>*@
+@if (Model.StudentsSelected.Count!=0)
+{
+    <h3>Selected Students</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Last Name</th>
+                <th>First name</th>
+                <th>Enrollment</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach(var item in Model.StudentsSelected)
+            {
+                <tr>
+                    <td>
+                        @item.LastName
+                    </td>
+                    <td>
+                        @item.FirstMidName
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.EnrollmentDate)
+                    </td>
+                </tr>
+            }
+        </tbody>
+     </table>
+}

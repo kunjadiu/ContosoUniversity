@@ -20,6 +20,7 @@ namespace ContosoUniversity.Pages.Students
             _context = context;
             Configuration = configuration;
         }
+        public string DataSort {get; set;}
         public string NameSort { get; set; }
         public string DateSort { get; set; }
         public string CurrentFilter { get; set; }
@@ -33,8 +34,10 @@ namespace ContosoUniversity.Pages.Students
                  Student = await _context.Student.ToListAsync();
              }
          }*/
-        public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex)
+       /* public async Task */
+        public async Task OnGetAsync(string sortOrder, string currentFilter, string searchString, int? pageIndex,string DataSort)
         {
+            
             CurrentSort = sortOrder;
             NameSort = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
             DateSort = sortOrder == "Date" ? "date_desc" : "Date";
@@ -58,6 +61,11 @@ namespace ContosoUniversity.Pages.Students
             {
                 studentsIQ = studentsIQ.Where(s => s.LastName.Contains(searchString)
                                        || s.FirstMidName.Contains(searchString));
+            }
+            if (!String.IsNullOrEmpty(DataSort))
+            {
+                studentsIQ = studentsIQ.Where(s => s.LastName.StartsWith(DataSort)
+                                       || s.FirstMidName.StartsWith(DataSort));
             }
             switch (sortOrder)
             {
